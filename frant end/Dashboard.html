@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard | FinanSmart</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      background: #f3f4f6;
+    }
+
+    header {
+      background-color: #2563eb;
+      color: white;
+      padding: 15px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .container {
+      padding: 20px;
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      padding: 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .card:hover {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      transform: scale(1.02);
+    }
+
+    .card h3 {
+      margin: 0 0 10px;
+      color: #1f2937;
+    }
+
+    .card p {
+      color: #6b7280;
+      font-size: 14px;
+    }
+
+    .logout {
+      background-color: white;
+      color: #2563eb;
+      border: 2px solid white;
+      border-radius: 8px;
+      padding: 8px 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .logout:hover {
+      background-color: #1e40af;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h2>👋 Welcome, Anku</h2>
+    <button class="logout" onclick="logout()">Logout</button>
+  </header>
+
+  <div class="container">
+    <h3>Your Dashboard</h3>
+
+    <div class="card-grid">
+      <div class="card" onclick="alert('Coming soon: Expense Summary!')">
+        <h3>💰 Summary</h3>
+        <p>View total spending and savings.</p>
+      </div>
+
+      <div class="card" onclick="alert('Coming soon: Add new expense form!')">
+        <h3>➕ Add Expense</h3>
+        <p>Add your daily expenses.</p>
+      </div>
+
+      <div class="card" onclick="alert('Coming soon: List of expenses!')">
+        <h3>📄 View Expenses</h3>
+        <p>See all your previous records.</p>
+      </div>
+
+      <div class="card" onclick="alert('Coming soon: AI Suggestions!')">
+        <h3>📊 AI Insights</h3>
+        <p>Get budget tips & smart charts.</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function logout() {
+      alert("You have been logged out.");
+      window.location.href = "login.html";
+    }
+  </script>
+
+</body>
+</html>

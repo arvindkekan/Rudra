@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Register Page with OTP</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f2f2f2;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container {
+      background-color: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0px 0px 15px rgba(0,0,0,0.1);
+      width: 320px;
+      text-align: center;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    #sendOtpBtn {
+      background-color: #ff9800;
+      color: white;
+    }
+
+    #registerBtn {
+      background-color: #2196F3;
+      color: white;
+      display: none;
+    }
+
+    #registerBtn:hover {
+      background-color: #1976D2;
+    }
+
+    #sendOtpBtn:hover {
+      background-color: #e68900;
+    }
+
+    #otpField {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Register</h2>
+    <form id="registerForm">
+      <input type="text" id="username" placeholder="Username" required>
+      <input type="text" id="mobile" placeholder="Mobile Number" required>
+      <input type="password" id="password" placeholder="Password" required>
+      <input type="password" id="confirmPassword" placeholder="Confirm Password" required>
+      <button type="button" id="sendOtpBtn">Send OTP</button>
+
+      <div id="otpField">
+        <input type="text" id="otpInput" placeholder="Enter OTP">
+        <button type="submit" id="registerBtn">Register</button>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    let generatedOTP = "";
+
+    document.getElementById("sendOtpBtn").addEventListener("click", function () {
+      const mobile = document.getElementById("mobile").value;
+      if (mobile.length !== 10 || isNaN(mobile)) {
+        alert("Please enter a valid 10-digit mobile number.");
+        return;
+      }
+
+      // Generate 4-digit OTP
+      generatedOTP = Math.floor(1000 + Math.random() * 9000).toString();
+      console.log("Your OTP is:", generatedOTP);
+      alert("OTP sent to your number! (Check console)");
+
+      // Show OTP input
+      document.getElementById("otpField").style.display = "block";
+      document.getElementById("registerBtn").style.display = "block";
+    });
+
+    document.getElementById("registerForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const username = document.getElementById("username").value;
+      const mobile = document.getElementById("mobile").value;
+      const password = document.getElementById("password").value;
+      const confirmPassword = document.getElementById("confirmPassword").value;
+      const userOTP = document.getElementById("otpInput").value;
+
+      if (password !== confirmPassword) {
+        alert("Passwords do not match!");
+        return;
+      }
+
+      if (userOTP !== generatedOTP) {
+        alert("Incorrect OTP. Please try again.");
+        return;
+      }
+
+      // If everything matches
+      console.log("Username:", username);
+      console.log("Mobile:", mobile);
+      console.log("Password:", password);
+
+      alert("Registration successful!");
+    });
+  </script>
+</body>
+</html>
