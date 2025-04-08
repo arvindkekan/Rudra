@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Insights - Smart Finance Manager</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      background-color: #f0f4ff;
+      padding: 40px;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: auto;
+      background: #ffffff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #2c3e50;
+    }
+
+    canvas {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Spending Insights</h2>
+    <canvas id="expensesChart" height="300"></canvas>
+  </div>
+
+  <script>
+    const ctx = document.getElementById('expensesChart').getContext('2d');
+    const expensesChart = new Chart(ctx, {
+      type: 'doughnut',
+      data: {
+        labels: ['Food', 'Transport', 'Entertainment', 'Health', 'Other'],
+        datasets: [{
+          label: 'Expenses by Category',
+          data: [300, 150, 200, 100, 80],
+          backgroundColor: [
+            '#4a6cf7',
+            '#f39c12',
+            '#00b894',
+            '#e74c3c',
+            '#8e44ad'
+          ],
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: 'bottom'
+          }
+        }
+      }
+    });
+  </script>
+</body>
+</html>

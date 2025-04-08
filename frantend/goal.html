@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Financial Goals - Smart Finance Manager</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      background-color: #f2fcf9;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .goal-form {
+      background-color: #ffffff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 500px;
+    }
+
+    .goal-form h2 {
+      margin-bottom: 20px;
+      color: #2c3e50;
+      text-align: center;
+    }
+
+    .goal-form label {
+      display: block;
+      margin-bottom: 8px;
+      color: #34495e;
+    }
+
+    .goal-form input, .goal-form textarea {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 16px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+
+    .goal-form button {
+      width: 100%;
+      padding: 12px;
+      background-color: #00b894;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .goal-form button:hover {
+      background-color: #019270;
+    }
+  </style>
+</head>
+<body>
+  <form class="goal-form">
+    <h2>Add Financial Goal</h2>
+
+    <label for="goalName">Goal Name</label>
+    <input type="text" id="goalName" placeholder="e.g. Buy a Laptop" required>
+
+    <label for="targetAmount">Target Amount</label>
+    <input type="number" id="targetAmount" placeholder="$1000" required>
+
+    <label for="targetDate">Target Date</label>
+    <input type="date" id="targetDate" required>
+
+    <label for="description">Description (optional)</label>
+    <textarea id="description" rows="3" placeholder="Brief about your goal..."></textarea>
+
+    <button type="submit">Save Goal</button>
+  </form>
+</body>
+</html>

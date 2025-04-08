@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Income - Smart Finance Manager</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      background-color: #eef2ff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .income-form {
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      width: 400px;
+    }
+
+    .income-form h2 {
+      margin-bottom: 20px;
+      color: #2c3e50;
+      text-align: center;
+    }
+
+    .income-form label {
+      display: block;
+      margin-bottom: 8px;
+      color: #34495e;
+    }
+
+    .income-form input, .income-form select {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 16px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+
+    .income-form button {
+      width: 100%;
+      padding: 12px;
+      background-color: #27ae60;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .income-form button:hover {
+      background-color: #219150;
+    }
+  </style>
+</head>
+<body>
+  <form class="income-form">
+    <h2>Add Income</h2>
+
+    <label for="source">Income Source</label>
+    <input type="text" id="source" placeholder="e.g. Freelance, Salary" required>
+
+    <label for="amount">Amount</label>
+    <input type="number" id="amount" placeholder="$0.00" required>
+
+    <label for="date">Date</label>
+    <input type="date" id="date" required>
+
+    <button type="submit">Add Income</button>
+  </form>
+</body>
+</html>

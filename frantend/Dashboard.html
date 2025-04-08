@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard - Smart Finance Manager</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      display: flex;
+      height: 100vh;
+      background-color: #f0f4ff;
+    }
+
+    .sidebar {
+      width: 220px;
+      background-color: #4a6cf7;
+      padding: 20px;
+      color: white;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .sidebar h2 {
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .sidebar a {
+      color: white;
+      text-decoration: none;
+      margin: 10px 0;
+      padding: 10px;
+      border-radius: 8px;
+      transition: background 0.3s;
+    }
+
+    .sidebar a:hover {
+      background-color: #3856d5;
+    }
+
+    .main-content {
+      flex: 1;
+      padding: 40px;
+    }
+
+    .main-content h1 {
+      color: #2c3e50;
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <h2>Smart Finance</h2>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="add-expense.html">Add Expense</a>
+    <a href="view-expenses.html">View Expenses</a>
+    <a href="income.html">Income</a>
+    <a href="budgets.html">Budgets</a>
+    <a href="goals.html">Goals</a>
+    <a href="insights.html">Insights</a>
+    <a href="settings.html">Settings</a>
+  </div>
+
+  <div class="main-content">
+    <h1>Welcome to Your Dashboard</h1>
+    <p>Select an option from the menu to manage your finances.</p>
+  </div>
+</body>
+</html>
