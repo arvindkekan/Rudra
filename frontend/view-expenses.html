@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>View Expenses - Smart Finance Manager</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      background-color: #f4f6fa;
+      padding: 30px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .container {
+      background-color: white;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      max-width: 700px;
+      width: 100%;
+    }
+
+    h2 {
+      color: #333;
+      margin-bottom: 20px;
+    }
+
+    .back-btn {
+      display: inline-block;
+      margin-bottom: 20px;
+      color: #4a6cf7;
+      text-decoration: none;
+      font-size: 20px;
+    }
+
+    .back-btn:hover {
+      color: #1d4ed8;
+    }
+
+    .sort-section {
+      margin-bottom: 20px;
+    }
+
+    .sort-section label {
+      margin-right: 10px;
+      font-weight: 600;
+      color: #555;
+    }
+
+    select {
+      padding: 8px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+
+    .expense-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 12px;
+      border-bottom: 1px solid #eee;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+
+    .expense-category.food { background-color: #ffe5e5; }
+    .expense-category.transport { background-color: #e0f7fa; }
+    .expense-category.shopping { background-color: #fce4ec; }
+    .expense-category.entertainment { background-color: #e1bee7; }
+    .expense-category.utilities { background-color: #fff3e0; }
+    .expense-category.others { background-color: #f5f5f5; }
+  </style>
+  <script>
+    function loadExpenses(sortBy = "date") {
+      const currency = localStorage.getItem("currency") || "$";
+      const expenses = JSON.parse(localStorage.getItem("expenses")) || [];
+
+      expenses.sort((a, b) => {
+        if (sortBy === "name") return a.name.localeCompare(b.name);
+        if (sortBy === "category") return a.category.localeCompare(b.category);
+        return new Date(a.date) - new Date(b.date);
+      });
+
+      const list = document.getElementById("expense-list");
+      list.innerHTML = "";
+
+      expenses.forEach((expense) => {
+        const item = document.createElement("div");
+        item.className = `expense-item expense-category ${expense.category}`;
+        item.innerHTML = `
+          <div>
+            <strong>${expense.name}</strong><br />
+            <small>${expense.category}</small>
+          </div>
+          <div>
+            ${currency}${expense.amount} <br />
+            <small>${expense.date}</small>
+          </div>
+        `;
+        list.appendChild(item);
+      });
+    }
+
+    window.onload = function () {
+      document.getElementById("sort-by").addEventListener("change", function () {
+        loadExpenses(this.value);
+      });
+      loadExpenses();
+    }
+  </script>
+</head>
+<body>
+  <div class="container">
+    <a href="dashboard.html" class="back-btn">&larr;</a>
+    <h2>View Expenses</h2>
+
+    <div class="sort-section">
+      <label for="sort-by">Sort by:</label>
+      <select id="sort-by">
+        <option value="date">Date</option>
+        <option value="name">Name</option>
+        <option value="category">Category</option>
+      </select>
+    </div>
+
+    <div id="expense-list"></div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Income - Smart Finance Manager</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background-color: #f9fafc;
+      padding: 20px;
+    }
+    .container {
+      background: #fff;
+      padding: 30px;
+      max-width: 600px;
+      margin: 40px auto;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+    h2 {
+      margin-bottom: 20px;
+      color: #333;
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+      color: #555;
+    }
+    input, select {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    button {
+      margin-top: 25px;
+      background-color: #4a6cf7;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #1d4ed8;
+    }
+    .back {
+      text-decoration: none;
+      font-size: 20px;
+      color: #4a6cf7;
+    }
+    .back:hover {
+      color: #1d4ed8;
+    }
+    .currency {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+  </style>
+  <script>
+    window.onload = () => {
+      const currencySymbol = localStorage.getItem("currency") || "$";
+      document.getElementById("currency-symbol").innerText = currencySymbol;
+    };
+  </script>
+</head>
+<body>
+  <div class="container">
+    <a href="dashboard.html" class="back">&larr;</a>
+    <h2>Add Income</h2>
+    <form>
+      <label for="source">Income Source</label>
+      <input type="text" id="source" placeholder="e.g. Salary, Freelance" required />
+
+      <label for="amount">Amount</label>
+      <div class="currency">
+        <span id="currency-symbol">$</span>
+        <input type="number" id="amount" placeholder="Enter amount" required />
+      </div>
+
+      <label for="date">Date</label>
+      <input type="date" id="date" required />
+
+      <label for="notes">Notes</label>
+      <input type="text" id="notes" placeholder="Optional details" />
+
+      <button type="submit">Add Income</button>
+    </form>
+  </div>
+</body>
+</html>

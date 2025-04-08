@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Settings - Smart Finance Manager</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      background-color: #f4f6fa;
+      padding: 30px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .container {
+      background-color: white;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      max-width: 600px;
+      width: 100%;
+    }
+
+    h2 {
+      color: #333;
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-top: 15px;
+      color: #555;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      margin-top: 25px;
+      background-color: #4a6cf7;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #1d4ed8;
+    }
+
+    .back-btn {
+      display: inline-block;
+      margin-bottom: 20px;
+      color: #4a6cf7;
+      text-decoration: none;
+      font-size: 20px;
+    }
+
+    .back-btn:hover {
+      color: #1d4ed8;
+    }
+
+    #otp-section {
+      display: none;
+    }
+
+    #get-otp-btn {
+      background-color: #22c55e;
+      margin-top: 10px;
+    }
+
+    #get-otp-btn:hover {
+      background-color: #16a34a;
+    }
+  </style>
+  <script>
+    let originalMobile = "";
+
+    window.onload = function() {
+      const mobileInput = document.getElementById("mobile");
+      originalMobile = mobileInput.value;
+
+      mobileInput.addEventListener("input", function() {
+        const otpSection = document.getElementById("otp-section");
+        const getOtpBtn = document.getElementById("get-otp-btn");
+        if (mobileInput.value !== originalMobile && mobileInput.value.trim() !== "") {
+          otpSection.style.display = "block";
+          getOtpBtn.style.display = "inline-block";
+        } else {
+          otpSection.style.display = "none";
+          getOtpBtn.style.display = "none";
+        }
+      });
+    }
+
+    function saveSettings() {
+      const currency = document.getElementById("currency").value;
+      localStorage.setItem("currency", currency);
+      alert("Settings saved successfully!");
+    }
+
+    function getOtp() {
+      alert("OTP sent to your mobile number.");
+    }
+  </script>
+</head>
+<body>
+  <div class="container">
+    <a href="dashboard.html" class="back-btn">&larr;</a>
+    <h2>Settings</h2>
+
+    <label for="username">Username</label>
+    <input type="text" id="username" placeholder="Your username" />
+
+    <label for="password">New Password</label>
+    <input type="password" id="password" placeholder="Enter new password" />
+
+    <label for="confirm-password">Confirm Password</label>
+    <input type="password" id="confirm-password" placeholder="Re-enter password" />
+
+    <label for="mobile">Mobile Number</label>
+    <input type="tel" id="mobile" placeholder="Update mobile number" />
+    <button id="get-otp-btn" style="display:none;" onclick="getOtp()">Get OTP</button>
+
+    <div id="otp-section">
+      <label for="otp">OTP for Mobile Confirmation</label>
+      <input type="text" id="otp" placeholder="Enter OTP sent to mobile" />
+    </div>
+
+    <label for="permissions">Permissions</label>
+    <select id="permissions">
+      <option value="full">Full Access</option>
+      <option value="view">View Only</option>
+      <option value="custom">Custom</option>
+    </select>
+
+    <label for="currency">Preferred Currency</label>
+    <select id="currency">
+      <option value="$">USD ($)</option>
+      <option value="€">Euro (€)</option>
+      <option value="₹">INR (₹)</option>
+      <option value="£">GBP (£)</option>
+      <option value="¥">Yen (¥)</option>
+      <option value="₩">KRW (₩)</option>
+      <option value="₽">RUB (₽)</option>
+      <option value="₫">VND (₫)</option>
+      <option value="₪">ILS (₪)</option>
+      <option value="฿">THB (฿)</option>
+      <option value="₴">UAH (₴)</option>
+    </select>
+
+    <button onclick="saveSettings()">Save Settings</button>
+  </div>
+</body>
+</html>
