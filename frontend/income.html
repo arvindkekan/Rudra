@@ -1,96 +1,131 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Income - Smart Finance Manager</title>
+  <meta charset="UTF-8">
+  <title>Add Income - Smart Finance Manager</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <style>
     body {
-      margin: 0;
       font-family: 'Inter', sans-serif;
-      background-color: #f9fafc;
-      padding: 20px;
+      margin: 0;
+      padding: 30px;
+      background: #eef2f7;
+      display: flex;
+      justify-content: center;
     }
+
     .container {
       background: #fff;
       padding: 30px;
-      max-width: 600px;
-      margin: 40px auto;
       border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 600px;
     }
+
     h2 {
       margin-bottom: 20px;
       color: #333;
     }
-    label {
-      display: block;
-      margin-top: 15px;
-      color: #555;
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
     }
-    input, select {
-      width: 100%;
-      padding: 10px;
-      margin-top: 5px;
+
+    input, select, button {
+      padding: 12px;
       border: 1px solid #ccc;
-      border-radius: 6px;
+      border-radius: 8px;
+      font-size: 16px;
     }
+
     button {
-      margin-top: 25px;
       background-color: #4a6cf7;
       color: white;
+      font-weight: 600;
       border: none;
-      padding: 12px 20px;
-      border-radius: 6px;
-      font-size: 16px;
       cursor: pointer;
+      transition: background 0.3s;
     }
+
     button:hover {
       background-color: #1d4ed8;
     }
-    .back {
+
+    .back-arrow {
       text-decoration: none;
-      font-size: 20px;
+      font-size: 24px;
       color: #4a6cf7;
+      margin-bottom: 20px;
+      display: inline-block;
     }
-    .back:hover {
-      color: #1d4ed8;
-    }
-    .currency {
-      display: flex;
-      gap: 10px;
-      align-items: center;
+
+    .currency-label {
+      font-weight: 600;
+      margin-right: 5px;
     }
   </style>
-  <script>
-    window.onload = () => {
-      const currencySymbol = localStorage.getItem("currency") || "$";
-      document.getElementById("currency-symbol").innerText = currencySymbol;
-    };
-  </script>
 </head>
 <body>
   <div class="container">
-    <a href="dashboard.html" class="back">&larr;</a>
+    <a href="dashboard.html" class="back-arrow">&larr;</a>
     <h2>Add Income</h2>
-    <form>
-      <label for="source">Income Source</label>
-      <input type="text" id="source" placeholder="e.g. Salary, Freelance" required />
+    <form id="incomeForm">
+      <select id="bank" required>
+        <option value="">Select Bank / Card / UPI</option>
+        <option value="SBI">SBI</option>
+        <option value="HDFC">HDFC</option>
+        <option value="ICICI">ICICI</option>
+        <option value="Axis">Axis</option>
+        <option value="Kotak">Kotak</option>
+        <option value="Union Bank">Union Bank</option>
+        <option value="IDFC">IDFC</option>
+        <option value="IndusInd">IndusInd</option>
+        <option value="Google Pay">Google Pay</option>
+        <option value="PhonePe">PhonePe</option>
+        <option value="Amazon Pay">Amazon Pay</option>
+        <option value="BHIM UPI">BHIM UPI</option>
+        <option value="Paytm">Paytm</option>
+        <option value="Visa Credit Card">Visa Credit Card</option>
+        <option value="MasterCard Debit">MasterCard Debit</option>
+        <option value="RuPay Card">RuPay Card</option>
+        <option value="Other">Other</option>
+      </select>
 
-      <label for="amount">Amount</label>
-      <div class="currency">
-        <span id="currency-symbol">$</span>
-        <input type="number" id="amount" placeholder="Enter amount" required />
+      <input type="text" id="source" placeholder="Income Source (e.g. Salary, Freelance)" required />
+
+      <div style="display: flex; align-items: center;">
+        <span class="currency-label" id="currencySymbol">₹</span>
+        <input type="number" id="amount" placeholder="Enter Amount" required style="flex: 1;" />
       </div>
 
-      <label for="date">Date</label>
       <input type="date" id="date" required />
 
-      <label for="notes">Notes</label>
-      <input type="text" id="notes" placeholder="Optional details" />
-
-      <button type="submit">Add Income</button>
+      <button type="submit">Save Income</button>
     </form>
   </div>
+
+  <script>
+    const currency = localStorage.getItem('currency') || '₹';
+    document.getElementById('currencySymbol').textContent = currency;
+
+    document.getElementById('incomeForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const bank = document.getElementById('bank').value;
+      const source = document.getElementById('source').value;
+      const amount = parseFloat(document.getElementById('amount').value);
+      const date = document.getElementById('date').value;
+
+      let incomes = JSON.parse(localStorage.getItem('incomes')) || [];
+      incomes.push({ bank, source, amount, date });
+      localStorage.setItem('incomes', JSON.stringify(incomes));
+
+      alert("Income added successfully!");
+      e.target.reset();
+    });
+  </script>
 </body>
 </html>

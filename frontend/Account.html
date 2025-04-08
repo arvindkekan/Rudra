@@ -2,36 +2,55 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>View Expenses - Smart Finance Manager</title>
+  <title>Account - Smart Finance Manager</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: 'Inter', sans-serif;
-    }
-
     body {
-      background-color: #f4f6fa;
+      font-family: 'Inter', sans-serif;
+      margin: 0;
       padding: 30px;
+      background: #f4f6fa;
       display: flex;
       justify-content: center;
     }
 
     .container {
-      background-color: white;
+      background: #fff;
       padding: 40px;
       border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      max-width: 900px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      max-width: 700px;
       width: 100%;
-      position: relative;
     }
 
     h2 {
-      color: #333;
       margin-bottom: 20px;
+      color: #333;
+    }
+
+    .bank-entry {
+      border: 1px solid #e0e0e0;
+      padding: 15px;
+      margin-bottom: 20px;
+      border-radius: 10px;
+      background: #f9f9ff;
+    }
+
+    .info {
+      margin-bottom: 10px;
+      font-size: 16px;
+    }
+
+    .info span {
+      font-weight: 600;
+      color: #4a6cf7;
+    }
+
+    .balance {
+      font-size: 18px;
+      font-weight: bold;
+      color: #1f2937;
+      margin-top: 5px;
     }
 
     .back-btn {
@@ -46,196 +65,101 @@
       color: #1d4ed8;
     }
 
-    .sort-section {
-      margin-bottom: 20px;
-    }
-
-    .sort-section label {
-      margin-right: 10px;
-      font-weight: 600;
-      color: #555;
-    }
-
-    select {
-      padding: 8px;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-bottom: 20px;
-    }
-
-    th, td {
-      text-align: left;
-      padding: 12px;
-      border-bottom: 1px solid #ddd;
-      position: relative;
-    }
-
-    th {
-      background-color: #f4f4f4;
-    }
-
-    .food { background-color: #ffe5e5; }
-    .transport { background-color: #e0f7fa; }
-    .shopping { background-color: #fce4ec; }
-    .entertainment { background-color: #e1bee7; }
-    .utilities { background-color: #fff3e0; }
-    .others { background-color: #f5f5f5; }
-
-    .summary {
-      background-color: #f0f4ff;
-      padding: 15px;
-      border-radius: 8px;
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
       margin-top: 20px;
     }
 
-    .edit-icon {
-      display: none;
-      position: absolute;
-      right: 10px;
-      top: 50%;
-      transform: translateY(-50%);
+    input, select, button {
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+    }
+
+    button {
+      background-color: #4a6cf7;
+      color: white;
+      font-weight: 600;
       cursor: pointer;
-      color: #4a6cf7;
-      font-size: 18px;
     }
 
-    .edit-icon:hover::after {
-      content: "Edit";
-      position: absolute;
-      bottom: -25px;
-      left: -5px;
-      background: #333;
-      color: #fff;
-      font-size: 12px;
-      padding: 4px 8px;
-      border-radius: 4px;
-      white-space: nowrap;
-    }
-
-    tr:hover .edit-icon {
-      display: inline-block;
+    button:hover {
+      background-color: #1d4ed8;
     }
   </style>
-  <script>
-    let editingIndex = -1;
-
-    function loadExpenses(sortBy = "date") {
-      const currency = localStorage.getItem("currency") || "$";
-      const expenses = JSON.parse(localStorage.getItem("expenses")) || [];
-
-      expenses.sort((a, b) => {
-        if (sortBy === "name") return a.name.localeCompare(b.name);
-        if (sortBy === "category") return a.category.localeCompare(b.category);
-        return new Date(a.date) - new Date(b.date);
-      });
-
-      const tableBody = document.getElementById("expense-table-body");
-      tableBody.innerHTML = "";
-
-      let total = 0;
-      let today = new Date();
-      let weekly = 0, monthly = 0;
-
-      expenses.forEach((expense, index) => {
-        total += parseFloat(expense.amount);
-
-        let expDate = new Date(expense.date);
-        let daysDiff = Math.floor((today - expDate) / (1000 * 60 * 60 * 24));
-        if (daysDiff <= 7) weekly += parseFloat(expense.amount);
-        if (daysDiff <= 30) monthly += parseFloat(expense.amount);
-
-        const row = document.createElement("tr");
-
-        if (editingIndex === index) {
-          row.innerHTML = `
-            <td><input type="text" value="${expense.name}" id="edit-name" /></td>
-            <td><input type="text" value="${expense.category}" id="edit-category" /></td>
-            <td><input type="number" value="${expense.amount}" id="edit-amount" /></td>
-            <td><input type="date" value="${expense.date}" id="edit-date" /></td>
-            <td><button onclick="saveExpense(${index})">💾</button></td>
-          `;
-        } else {
-          row.innerHTML = `
-            <td>${expense.name}</td>
-            <td class="${expense.category}">${expense.category}</td>
-            <td>${currency}${expense.amount}</td>
-            <td>${expense.date}</td>
-            <td><span class="edit-icon" onclick="editExpense(${index})">✏️</span></td>
-          `;
-        }
-
-        tableBody.appendChild(row);
-      });
-
-      document.getElementById("summary").innerHTML = `
-        <strong>Total:</strong> ${currency}${total.toFixed(2)}<br>
-        <strong>Weekly:</strong> ${currency}${weekly.toFixed(2)}<br>
-        <strong>Monthly:</strong> ${currency}${monthly.toFixed(2)}
-      `;
-    }
-
-    function editExpense(index) {
-      editingIndex = index;
-      loadExpenses();
-    }
-
-    function saveExpense(index) {
-      const expenses = JSON.parse(localStorage.getItem("expenses")) || [];
-      expenses[index] = {
-        name: document.getElementById("edit-name").value,
-        category: document.getElementById("edit-category").value,
-        amount: parseFloat(document.getElementById("edit-amount").value),
-        date: document.getElementById("edit-date").value,
-        description: expenses[index].description || ""
-      };
-      localStorage.setItem("expenses", JSON.stringify(expenses));
-      editingIndex = -1;
-      loadExpenses();
-    }
-
-    window.onload = function () {
-      document.getElementById("sort-by").addEventListener("change", function () {
-        loadExpenses(this.value);
-      });
-      loadExpenses();
-    }
-  </script>
 </head>
 <body>
   <div class="container">
     <a href="dashboard.html" class="back-btn">&larr;</a>
-    <h2>View Expenses</h2>
+    <h2>Account Details</h2>
 
-    <div class="sort-section">
-      <label for="sort-by">Sort by:</label>
-      <select id="sort-by">
-        <option value="date">Date</option>
-        <option value="name">Name</option>
-        <option value="category">Category</option>
-      </select>
-    </div>
+    <div id="accounts"></div>
 
-    <table>
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Category</th>
-          <th>Amount</th>
-          <th>Date</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody id="expense-table-body">
-        <!-- Filled by JS -->
-      </tbody>
-    </table>
-
-    <div id="summary" class="summary"></div>
+    <form id="accountForm">
+      <input type="text" id="bankName" placeholder="Bank, Card or UPI Name" list="bankOptions" required />
+      <datalist id="bankOptions">
+        <option value="SBI">
+        <option value="HDFC">
+        <option value="ICICI">
+        <option value="Axis">
+        <option value="Kotak">
+        <option value="Paytm UPI">
+        <option value="Google Pay">
+        <option value="PhonePe">
+        <option value="Amazon Pay">
+        <option value="BHIM UPI">
+        <option value="Other Bank">
+      </datalist>
+      <input type="text" id="holderName" placeholder="Account Holder Name" required />
+      <button type="submit">Add Account</button>
+    </form>
   </div>
+
+  <script>
+    const currency = localStorage.getItem('currency') || '₹';
+
+    function renderAccounts() {
+      const container = document.getElementById('accounts');
+      container.innerHTML = '';
+
+      const accounts = JSON.parse(localStorage.getItem('accounts')) || [];
+      const incomes = JSON.parse(localStorage.getItem('incomes')) || [];
+      const expenses = JSON.parse(localStorage.getItem('expenses')) || [];
+
+      accounts.forEach((acc, index) => {
+        const totalIncome = incomes.filter(i => i.bank === acc.bankName).reduce((sum, i) => sum + parseFloat(i.amount || 0), 0);
+        const totalExpense = expenses.filter(e => e.bank === acc.bankName).reduce((sum, e) => sum + parseFloat(e.amount || 0), 0);
+        const balance = totalIncome - totalExpense;
+
+        const div = document.createElement('div');
+        div.className = 'bank-entry';
+        div.innerHTML = `
+          <div class="info">Bank/Card/UPI: <span>${acc.bankName}</span></div>
+          <div class="info">Holder Name: <span>${acc.holderName}</span></div>
+          <div class="info">Total Income: <span>${currency} ${totalIncome.toFixed(2)}</span></div>
+          <div class="info">Total Expenses: <span>${currency} ${totalExpense.toFixed(2)}</span></div>
+          <div class="balance">Remaining: ${currency} ${balance.toFixed(2)}</div>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    function saveAccount(e) {
+      e.preventDefault();
+      const bankName = document.getElementById('bankName').value;
+      const holderName = document.getElementById('holderName').value;
+      let accounts = JSON.parse(localStorage.getItem('accounts')) || [];
+      accounts.push({ bankName, holderName });
+      localStorage.setItem('accounts', JSON.stringify(accounts));
+      e.target.reset();
+      renderAccounts();
+    }
+
+    document.getElementById('accountForm').addEventListener('submit', saveAccount);
+    window.onload = renderAccounts;
+  </script>
 </body>
 </html>

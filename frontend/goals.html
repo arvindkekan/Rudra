@@ -1,18 +1,135 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Goals</title>
+  <meta charset="UTF-8">
+  <title>Goals - Smart Finance Manager</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      background-color: #f9f9fb;
+      padding: 30px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .container {
+      background-color: white;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      max-width: 900px;
+      width: 100%;
+    }
+
+    .back-btn {
+      display: inline-block;
+      margin-bottom: 20px;
+      color: #4a6cf7;
+      text-decoration: none;
+      font-size: 20px;
+    }
+
+    .back-btn:hover {
+      color: #1d4ed8;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      margin-bottom: 30px;
+    }
+
+    input, button {
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+    }
+
+    button {
+      background-color: #4a6cf7;
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    button:hover {
+      background-color: #1d4ed8;
+    }
+
+    .goal-item {
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .goal-item span {
+      font-weight: 600;
+      color: #333;
+    }
+  </style>
+  <script>
+    function loadGoals() {
+      const currency = localStorage.getItem("currency") || "";
+      const goals = JSON.parse(localStorage.getItem("goals")) || [];
+      const list = document.getElementById("goal-list");
+      list.innerHTML = "";
+
+      goals.forEach(goal => {
+        const div = document.createElement("div");
+        div.className = "goal-item";
+        div.innerHTML = `<span>${goal.name}</span><span>${currency} ${goal.amount}</span>`;
+        list.appendChild(div);
+      });
+    }
+
+    function saveGoal(e) {
+      e.preventDefault();
+      const name = document.getElementById("goal-name").value;
+      const amount = parseFloat(document.getElementById("goal-amount").value);
+      let goals = JSON.parse(localStorage.getItem("goals")) || [];
+      goals.push({ name, amount });
+      localStorage.setItem("goals", JSON.stringify(goals));
+      e.target.reset();
+      loadGoals();
+    }
+
+    window.onload = () => {
+      document.getElementById("goal-form").addEventListener("submit", saveGoal);
+      loadGoals();
+    };
+  </script>
 </head>
 <body>
-  <h2>Financial Goals</h2>
-  <form>
-    <label>Goal Name:</label>
-    <input type="text"><br>
-    <label>Target Amount:</label>
-    <input type="number"><br>
-    <label>Deadline:</label>
-    <input type="date"><br>
-    <button type="submit">Add Goal</button>
-  </form>
+  <div class="container">
+    <a href="dashboard.html" class="back-btn">&larr;</a>
+    <h2>Financial Goals</h2>
+
+    <form id="goal-form">
+      <input type="text" id="goal-name" placeholder="Goal name (e.g., Buy a car)" required>
+      <input type="number" id="goal-amount" placeholder="Target amount" required>
+      <button type="submit">Add Goal</button>
+    </form>
+
+    <div id="goal-list"></div>
+  </div>
 </body>
 </html>

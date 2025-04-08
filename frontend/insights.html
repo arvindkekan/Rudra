@@ -1,10 +1,149 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Insights</title>
+  <meta charset="UTF-8" />
+  <title>Insights - Smart Finance Manager</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      background-color: #f4f6fa;
+      padding: 30px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .container {
+      background-color: white;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      max-width: 1000px;
+      width: 100%;
+    }
+
+    .back-btn {
+      display: inline-block;
+      margin-bottom: 20px;
+      color: #4a6cf7;
+      text-decoration: none;
+      font-size: 20px;
+    }
+
+    h2 {
+      color: #333;
+      margin-bottom: 30px;
+    }
+
+    .insight {
+      margin-bottom: 20px;
+      background-color: #f9fafb;
+      padding: 20px;
+      border-left: 6px solid #4a6cf7;
+      border-radius: 6px;
+    }
+
+    .insight strong {
+      color: #1d4ed8;
+    }
+
+    .chart-box {
+      margin-top: 30px;
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 20px;
+    }
+  </style>
 </head>
 <body>
-  <h2>Financial Insights</h2>
-  <p>Chart, stats, and tips will appear here based on your expenses and income data.</p>
+  <div class="container">
+    <a href="dashboard.html" class="back-btn">&larr;</a>
+    <h2>Financial Insights</h2>
+
+    <div class="insight">
+      <p>Your highest spending this month was on <strong id="top-category">Food</strong>.</p>
+    </div>
+
+    <div class="insight">
+      <p>You saved <strong id="total-saved">0</strong> this month.</p>
+    </div>
+
+    <div class="insight">
+      <p>Your average daily expense is <strong id="avg-daily">0</strong>.</p>
+    </div>
+
+    <div class="chart-box">
+      <h3>Spending by Category</h3>
+      <canvas id="spendingChart" width="400" height="200"></canvas>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    const expenses = JSON.parse(localStorage.getItem("expenses")) || [];
+    const incomeData = JSON.parse(localStorage.getItem("income")) || [];
+    const currency = localStorage.getItem("currency") || "Rs";
+
+    const today = new Date();
+    const currentMonth = today.getMonth();
+    const currentYear = today.getFullYear();
+
+    let monthlyExpenses = 0;
+    let monthlyIncome = 0;
+    let categoryTotals = {};
+
+    expenses.forEach(exp => {
+      const date = new Date(exp.date);
+      if (date.getMonth() === currentMonth && date.getFullYear() === currentYear) {
+        monthlyExpenses += parseFloat(exp.amount);
+        categoryTotals[exp.category] = (categoryTotals[exp.category] || 0) + parseFloat(exp.amount);
+      }
+    });
+
+    incomeData.forEach(inc => {
+      const date = new Date(inc.date);
+      if (date.getMonth() === currentMonth && date.getFullYear() === currentYear) {
+        monthlyIncome += parseFloat(inc.amount);
+      }
+    });
+
+    const savings = (monthlyIncome - monthlyExpenses).toFixed(2);
+    const avgDaily = (monthlyExpenses / today.getDate()).toFixed(2);
+
+    document.getElementById("total-saved").textContent = currency + " " + savings;
+    document.getElementById("avg-daily").textContent = currency + " " + avgDaily;
+
+    const topCategory = Object.entries(categoryTotals).sort((a, b) => b[1] - a[1])[0];
+    document.getElementById("top-category").textContent = topCategory ? topCategory[0] : "N/A";
+
+    const ctx = document.getElementById('spendingChart').getContext('2d');
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: Object.keys(categoryTotals),
+        datasets: [{
+          label: 'Spending',
+          data: Object.values(categoryTotals),
+          backgroundColor: '#4a6cf7',
+          borderRadius: 5
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
+  </script>
 </body>
 </html>
+

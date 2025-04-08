@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Budgets - Smart Finance Manager</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
   <style>
     * {
-      box-sizing: border-box;
       margin: 0;
       padding: 0;
+      box-sizing: border-box;
       font-family: 'Inter', sans-serif;
     }
 
@@ -24,7 +24,7 @@
       padding: 40px;
       border-radius: 12px;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      max-width: 800px;
+      max-width: 900px;
       width: 100%;
     }
 
@@ -41,68 +41,122 @@
     }
 
     h2 {
-      color: #333;
       margin-bottom: 20px;
+      color: #333;
     }
 
-    .budget-item {
-      background: #f9fbff;
-      padding: 20px;
-      border-radius: 10px;
-      margin-bottom: 15px;
-      border-left: 5px solid #4a6cf7;
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      margin-bottom: 30px;
     }
 
-    .budget-item h4 {
-      margin-bottom: 5px;
-      color: #444;
+    input, select, button {
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 16px;
     }
 
-    .budget-item p {
-      color: #666;
-      font-size: 14px;
+    button {
+      background-color: #4a6cf7;
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.2s;
     }
 
-    .currency-symbol {
-      font-weight: bold;
+    button:hover {
+      background-color: #1d4ed8;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    th, td {
+      text-align: left;
+      padding: 12px;
+      border-bottom: 1px solid #ddd;
+    }
+
+    th {
+      background-color: #f0f0f0;
     }
   </style>
   <script>
-    function applyCurrency() {
-      const currency = localStorage.getItem("currency") || "$";
-      document.querySelectorAll('.currency-symbol').forEach(el => {
-        el.textContent = currency;
+    function loadBudgets() {
+      const currency = localStorage.getItem("currency") || "";
+      const budgets = JSON.parse(localStorage.getItem("budgets")) || [];
+      const expenses = JSON.parse(localStorage.getItem("expenses")) || [];
+      const tableBody = document.getElementById("budget-table-body");
+      tableBody.innerHTML = "";
+
+      budgets.forEach(budget => {
+        const totalExpense = expenses
+          .filter(exp => exp.category === budget.category)
+          .reduce((sum, exp) => sum + parseFloat(exp.amount || 0), 0)
+          .toFixed(2);
+
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${budget.category}</td>
+          <td>${currency} ${Math.abs(budget.amount)}</td>
+          <td>${currency} ${totalExpense}</td>
+        `;
+        tableBody.appendChild(tr);
       });
     }
 
-    document.addEventListener("DOMContentLoaded", applyCurrency);
+    function saveBudget(e) {
+      e.preventDefault();
+      const category = document.getElementById("category").value;
+      const amount = parseFloat(document.getElementById("amount").value);
+      let budgets = JSON.parse(localStorage.getItem("budgets")) || [];
+      budgets.push({ category, amount });
+      localStorage.setItem("budgets", JSON.stringify(budgets));
+      e.target.reset();
+      loadBudgets();
+    }
+
+    window.onload = () => {
+      document.getElementById("budget-form").addEventListener("submit", saveBudget);
+      loadBudgets();
+    };
   </script>
 </head>
 <body>
   <div class="container">
     <a href="dashboard.html" class="back-btn">&larr;</a>
-    <h2>Your Budgets</h2>
+    <h2>Manage Budgets</h2>
 
-    <div class="budget-item">
-      <h4>Groceries</h4>
-      <p>Monthly Limit: <span class="currency-symbol"></span>2000</p>
-    </div>
+    <form id="budget-form">
+      <select id="category" required>
+        <option value="">Select Category</option>
+        <option value="Food">Food</option>
+        <option value="Transport">Transport</option>
+        <option value="Shopping">Shopping</option>
+        <option value="Entertainment">Entertainment</option>
+        <option value="Utilities">Utilities</option>
+        <option value="Others">Others</option>
+      </select>
+      <input type="number" id="amount" placeholder="Enter budget amount" required />
+      <button type="submit">Add Budget</button>
+    </form>
 
-    <div class="budget-item">
-      <h4>Transport</h4>
-      <p>Monthly Limit: <span class="currency-symbol"></span>1500</p>
-    </div>
-
-    <div class="budget-item">
-      <h4>Entertainment</h4>
-      <p>Monthly Limit: <span class="currency-symbol"></span>1000</p>
-    </div>
-
-    <div class="budget-item">
-      <h4>Utilities</h4>
-      <p>Monthly Limit: <span class="currency-symbol"></span>1200</p>
-    </div>
-
+    <table>
+      <thead>
+        <tr>
+          <th>Category</th>
+          <th>Budget Amount</th>
+          <th>Expenses</th>
+        </tr>
+      </thead>
+      <tbody id="budget-table-body"></tbody>
+    </table>
   </div>
 </body>
 </html>
